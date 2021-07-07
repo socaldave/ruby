@@ -1,0 +1,30 @@
+<h1><div style="text-align: center;">User</div></h1>
+<%= form_tag(home_user_path, method: :get) do %>
+  where: <%= text_field_tag(:where, params[:where]) %>
+  = <%= text_field_tag(:equal, params[:equal]) %>
+  <%= submit_tag ("Los") %>
+<% end %>
+<%if params[:where] == nil %>
+  <% result = ExternalDb.connection.exec_query("select * from user limit 100")%>
+<% else %>
+  <p><% result = ExternalDb.connection.exec_query("select * from user where #{params[:where]}='#{params[:equal]}' limit 100")%></p>
+<%end %>
+<table class="output">
+  <thead>
+  <tr>
+    <th>id</th>
+    <th>twitchid</th>
+    <th>name</th>
+
+  </tr>
+  </thead>
+  <tbody>
+  <%result.each do |row| %>
+    <tr>
+      <td><%= row['id'] %></td>
+      <td><%= row['twitchid'] %></td>
+      <td><%= row['Name'] %></td>
+    </tr>
+  <%end %>
+  </tbody>
+</table>
